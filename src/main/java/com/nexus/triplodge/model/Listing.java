@@ -46,7 +46,7 @@ public class Listing {
     private String title;
     private String description;
     private String location;
-    private BigDecimal pricerPerNight;
+    private BigDecimal pricePerNight;
     private int maxGuest;
 
     @CreationTimestamp
