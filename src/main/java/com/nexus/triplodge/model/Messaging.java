@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,6 @@ public class Messaging {
     private Date sentAt = new Date();
 
     @ManyToOne
-    @JoinColumn(name = "user-id")
-    private Set<User> users = new HashSet<>();
+    @JoinColumn(name = "guest_id")
+    private User guest;
 }
