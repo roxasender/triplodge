@@ -31,6 +31,7 @@ public class User {
     private String email;
     private String password;
     private String fullname;
+    private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> roles = new HashSet<>();
@@ -50,7 +51,7 @@ public class User {
     // Need to validate url
     private String profilePictureUrl;
 
-    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number")
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid phone number")
     private String phoneNumber;
 
     @CreationTimestamp
