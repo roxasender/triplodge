@@ -29,5 +29,5 @@ public class Availability {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    boolean isAvailability;
+    private boolean isAvailability;
 }
