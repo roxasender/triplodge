@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,11 +51,11 @@ public class Booking {
     @CreationTimestamp
     private Date createAt = new Date();
 
-    @OneToOne
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     @JoinColumn(name = "review_id")
     private Review review;
 
-    @OneToOne
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
