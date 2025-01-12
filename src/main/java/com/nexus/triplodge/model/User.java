@@ -46,8 +46,14 @@ public class User {
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL)
     private Set<Listing> listings = new HashSet<>();
 
-    @OneToMany(mappedBy = "guest", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Messaging> messagings = new HashSet<>();
+    // @OneToMany(mappedBy = "guest", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // private Set<Messaging> messagings = new HashSet<>();
+
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Messaging> messagingsSent = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Messaging> messagingsReceived = new HashSet<>();
 
     // Need to validate url
     private String profilePictureUrl;
