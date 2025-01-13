@@ -10,6 +10,6 @@ import com.nexus.triplodge.model.User;
 public interface IUserService {
     Optional<User> getUserByUserName(String username);
     void updateUserProfile(Long userId, Map<String, Object> updates);
-    // void register(UserDto user);
+    void registerUser(UserDto user);
     List<UserDto> getAllUsers();
 }

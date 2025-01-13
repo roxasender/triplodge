@@ -1,15 +1,24 @@
 package com.nexus.triplodge.service;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nexus.triplodge.dto.UserDto;
+import com.nexus.triplodge.model.Role;
 import com.nexus.triplodge.model.User;
+import com.nexus.triplodge.model.UserRole;
+import com.nexus.triplodge.repository.RoleRepository;
 import com.nexus.triplodge.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
-    // private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
 
     @Override
     public Optional<User> getUserByUserName(String username) {
@@ -57,24 +67,30 @@ public class UserService implements IUserService {
         
     }
 
-    // @Override
-    // public void register(UserDto user) {
-    //     // if username already exist
-    //     if (userRepository.existsByUsername(user.getUsername())) {
-    //         throw new IllegalArgumentException("Username is already existed");
-    //     }
-    //     // if email already exist
-    //     if (userRepository.existsByEmail(user.getEmail())) {
-    //         throw new IllegalArgumentException("Email is already existed");
-    //     }
-    //     User newUser = new User();
-    //     newUser.setUsername(user.getUsername());
-    //     newUser.setEmail(user.getEmail());
-    //     newUser.setFullname(user.getFullname());
-    //     newUser.setPhoneNumber(user.getPhoneNumber());
-    //     newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+    @Override
+    public void registerUser(UserDto user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email is already in use.");
+        }
 
-    // }
+        User newUser = new User();
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setFullname(user.getFullname());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setCreatedAt(new Date());
+
+        Role role = roleRepository.findByroleName("ROLE_USER").get(); 
+        UserRole userRole = new UserRole(); 
+        userRole.setRole(role); 
+        userRole.setUser(newUser); 
+        
+        Set<UserRole> roles = new HashSet<>(); 
+        roles.add(userRole); 
+        newUser.setRoles(roles); 
+
+        userRepository.save(newUser);
+    }
 
     @Override
     public List<UserDto> getAllUsers() {
