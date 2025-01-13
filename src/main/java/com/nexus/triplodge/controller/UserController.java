@@ -1,5 +1,6 @@
 package com.nexus.triplodge.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nexus.triplodge.dto.UserDto;
 import com.nexus.triplodge.model.User;
 import com.nexus.triplodge.service.IUserService;
 
@@ -41,6 +43,13 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Can not updated user's profile");
         }
+    }
+
+    // GET /api/admin/users: Fetches a list of all users
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
     
 }

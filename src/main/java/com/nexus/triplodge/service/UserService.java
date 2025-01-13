@@ -1,10 +1,14 @@
 package com.nexus.triplodge.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.nexus.triplodge.dto.UserDto;
 import com.nexus.triplodge.model.User;
 import com.nexus.triplodge.repository.UserRepository;
 
@@ -16,6 +20,7 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     // private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Override
     public Optional<User> getUserByUserName(String username) {
@@ -70,4 +75,12 @@ public class UserService implements IUserService {
     //     newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
     // }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+            .map(user -> modelMapper.map(user, UserDto.class))
+            .collect(Collectors.toList());
+    }
 }
